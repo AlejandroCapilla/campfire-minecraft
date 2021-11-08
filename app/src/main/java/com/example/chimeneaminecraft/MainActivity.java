@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         btnMute = findViewById(R.id.btnMute);
 
         Glide.with(this).load(R.drawable.campfire).into(imageView);
+        imageView.setTag("campfire");
 
         soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
         idCrackle1 = soundPool.load(this, R.raw.crackle1,1);
@@ -54,23 +55,71 @@ public class MainActivity extends AppCompatActivity {
         idCrackle5 = soundPool.load(this, R.raw.crackle5, 1);
         idCrackle6 = soundPool.load(this, R.raw.crackle6, 1);
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if (!btnMute.isChecked()) {
+                        reproducirSonidoFogata();
+                    } else {
+                        soundPool.autoPause();
+                    }
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
         btnMute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (!btnMute.isChecked()) {
-                    soundPool.play(idCrackle1,1,1,1,0,1);
-                }else {
-                    soundPool.autoPause();
-                }
+
             }
         });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(imageView.getTag().equals("campfire")) {
+                    Glide.with(view).load(R.drawable.soul_campfire).into(imageView);
+                    imageView.setTag("soul_campfire");
+                } else {
+                    Glide.with(view).load(R.drawable.campfire).into(imageView);
+                    imageView.setTag("campfire");
+                }
             }
         });
+    }
+
+    private void reproducirSonidoFogata() {
+        byte sonidoAleatorio = (byte) ((Math.random() * 6)+1);
+        int id;
+        switch (sonidoAleatorio) {
+            case 1:
+               id = idCrackle1;
+               break;
+            case 2:
+                id = idCrackle2;
+                break;
+            case 3:
+                id = idCrackle3;
+                break;
+            case 4:
+                id = idCrackle4;
+                break;
+            case 5:
+                id = idCrackle5;
+                break;
+            case 6:
+                id = idCrackle6;
+                break;
+            default:
+                id = idCrackle1;
+        }
+        soundPool.play(id,1,1,1,0,1);
     }
 
     @Override
