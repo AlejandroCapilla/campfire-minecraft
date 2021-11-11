@@ -1,28 +1,16 @@
 package com.example.chimeneaminecraft;
 
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ToggleButton;
-
 import com.bumptech.glide.Glide;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imvBackground, imageView;
     private SoundPool soundPool;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
-    private ToggleButton btnMute;
+    private ImageButton btnMute;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         imvBackground.setImageResource(R.drawable.background);
         imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
         btnMute = findViewById(R.id.btnMute);
+        btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
+        btnMute.setTag("mute");
 
         Glide.with(this).load(R.drawable.campfire).into(imageView);
         imageView.setTag("campfire");
@@ -59,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 while (true) {
-                    if (!btnMute.isChecked()) {
+                    if (!btnMute.getTag().equals("mute")) {
                         reproducirSonidoFogata();
                     } else {
                         soundPool.autoPause();
@@ -73,10 +63,34 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-        btnMute.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        btnMute.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View view) {
+                if (!btnMute.getTag().equals("mute")) {
+                    btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
+                    btnMute.setTag("noMute");
+                } else {
+                    btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
+                    btnMute.setTag("mute");
+                }
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        });
 
+        btnMute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (btnMute.getTag().equals("mute")) {
+                    btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
+                    btnMute.setTag("sound");
+                } else {
+                    btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
+                    btnMute.setTag("mute");
+                }
             }
         });
 
