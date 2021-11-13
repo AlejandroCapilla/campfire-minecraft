@@ -3,6 +3,7 @@ package com.example.chimeneaminecraft;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imvBackground, imageView;
     private SoundPool soundPool;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
-    private ImageButton btnMute;
+    private ImageButton btnMute, btnMusic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,10 @@ public class MainActivity extends AppCompatActivity {
         imvBackground.setImageResource(R.drawable.background);
         imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
         btnMute = findViewById(R.id.btnMute);
+        btnMusic = findViewById(R.id.btnMusic);
+
+        btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
+        btnMusic.setTag("music_off");
         btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
         btnMute.setTag("mute");
 
@@ -62,6 +67,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
+
+        btnMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (btnMusic.getTag().equals("music_off")) {
+                    btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
+                    btnMusic.setTag("music_on");
+                    mediaPlayer.start();
+                } else {
+                    btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
+                    btnMusic.setTag("music_off");
+                    mediaPlayer.pause();
+                }
+            }
+        });
 
         btnMute.setOnClickListener(new View.OnClickListener() {
             @Override
