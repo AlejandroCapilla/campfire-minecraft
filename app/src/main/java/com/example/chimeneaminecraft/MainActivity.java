@@ -7,10 +7,9 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ToggleButton;
+
 import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private SoundPool soundPool;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
     private ImageButton btnMute, btnMusic;
+    private byte contBackground = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         background = findViewById(R.id.background);
         imageView = findViewById(R.id.imvFogata);
         imvBackground = findViewById(R.id.imageViewBackground);
-        imvBackground.setImageResource(R.drawable.background);
+        imvBackground.setImageResource(R.drawable.background_1);
         imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
         btnMute = findViewById(R.id.btnMute);
         btnMusic = findViewById(R.id.btnMusic);
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     btnMute.setTag("mute");
                 }
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(4000);
                 } catch (InterruptedException exception) {
                     exception.printStackTrace();
                 }
@@ -128,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //Cambia la imagen del background
+        imvBackground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (contBackground == 1) {
+                    imvBackground.setImageResource(R.drawable.background_2);
+                    contBackground = 2;
+                }else if (contBackground == 2) {
+                    imvBackground.setImageResource(R.drawable.background_1);
+                    contBackground = 1;
+                }
+            }
+        });
     }
 
     private void reproducirSonidoFogata() {
@@ -155,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 id = idCrackle1;
         }
-        soundPool.play(id,1,1,1,0,1);
+        soundPool.play(id,0.8f,0.8f,1,0,1);
     }
 
     @Override

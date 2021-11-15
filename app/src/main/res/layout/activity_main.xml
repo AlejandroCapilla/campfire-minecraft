@@ -23,8 +23,8 @@
 
         <ImageView
             android:id="@+id/imvFogata"
-            android:layout_width="245dp"
-            android:layout_height="245dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_gravity="center" />
             <!--app:srcCompat="@drawable/campfire_off" />-->
     </LinearLayout>
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.93" />
+        app:layout_constraintGuide_percent="0.935" />
 
     <ImageButton
         android:id="@+id/btnMute"
@@ -44,6 +44,7 @@
         android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
+        android:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_volume_off_24" />
@@ -56,6 +57,7 @@
         android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
+        android:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMute"
         app:srcCompat="@drawable/ic_baseline_music_off_24" />
