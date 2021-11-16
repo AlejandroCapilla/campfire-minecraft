@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -142,6 +143,18 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                View decoreView = getWindow().getDecorView();
+                decoreView.setSystemUiVisibility(
+                        View.SYSTEM_UI_FLAG_FULLSCREEN
+                        |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                );
+            }
+        }, 1000);
     }
 
     private void reproducirSonidoFogata() {
@@ -184,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         View decoreView = getWindow().getDecorView();
         decoreView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
     }
 }

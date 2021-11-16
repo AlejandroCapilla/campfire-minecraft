@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.935" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <ImageButton
         android:id="@+id/btnMute"
@@ -39,10 +39,11 @@
         android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_volume_off_24" />
+        app:srcCompat="@drawable/ic_baseline_volume_off_24"
+        tools:ignore="SpeakableTextPresentCheck"
+        app:tint="@color/white" />
 
     <ImageButton
         android:id="@+id/btnMusic"
@@ -52,10 +53,11 @@
         android:layout_marginEnd="10dp"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMute"
-        app:srcCompat="@drawable/ic_baseline_music_off_24" />
+        app:srcCompat="@drawable/ic_baseline_music_off_24"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="@color/white" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
