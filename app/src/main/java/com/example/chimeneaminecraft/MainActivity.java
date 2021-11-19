@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
     private ImageButton btnMute, btnMusic;
+    private Thread threadCrackle, threadMusic;
     private byte contBackground = 1;
 
     @Override
@@ -53,44 +54,7 @@ public class MainActivity extends AppCompatActivity {
         idCrackle5 = soundPool.load(this, R.raw.crackle5, 1);
         idCrackle6 = soundPool.load(this, R.raw.crackle6, 1);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if (!btnMute.getTag().equals("mute")) {
-                        reproducirSonidoFogata();
-                    } else {
-                        soundPool.autoPause();
-                    }
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
         mediaPlayer = randomMusic();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    if(btnMusic.getTag().equals("music_on")) {
-                        if(!mediaPlayer.isPlaying()) {
-                            mediaPlayer = randomMusic();
-                            mediaPlayer.start();
-                        }
-                    }
-                    try {
-                        Thread.sleep(300000);
-                    } catch (InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-                }
-            }
-        }).start();
 
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +62,9 @@ public class MainActivity extends AppCompatActivity {
                 if (btnMusic.getTag().equals("music_off")) {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
                     btnMusic.setTag("music_on");
-                    mediaPlayer.start();
+
+                    //Se crea un nuevo Thread para music
+                    createMusicThread();
                 } else {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
                     btnMusic.setTag("music_off");
@@ -110,30 +76,17 @@ public class MainActivity extends AppCompatActivity {
         btnMute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!btnMute.getTag().equals("mute")) {
-                    btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
-                    btnMute.setTag("noMute");
-                } else {
-                    btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
-                    btnMute.setTag("mute");
-                }
-                try {
-                    Thread.sleep(4000);
-                } catch (InterruptedException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        });
-
-        btnMute.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 if (btnMute.getTag().equals("mute")) {
                     btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
                     btnMute.setTag("sound");
+
+                    //Se crea un nuevo Thread para el crackle
+                    createCrackleThread();
                 } else {
                     btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
                     btnMute.setTag("mute");
+                    // Se pausa el soundPool
+                    soundPool.autoPause();
                 }
             }
         });
@@ -144,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                 if(imageView.getTag().equals("campfire")) {
                     Glide.with(view).load(R.drawable.soul_campfire).into(imageView);
                     imageView.setTag("soul_campfire");
+
+
                 } else {
                     Glide.with(view).load(R.drawable.campfire).into(imageView);
                     imageView.setTag("campfire");
@@ -220,6 +175,45 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_FULLSCREEN
                 |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
+    }
+
+    private void createCrackleThread() {
+        threadCrackle = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //El Thread acaba si el boton pasa a mute
+                while (!btnMute.getTag().equals("mute")) {
+                    reproducirSonidoFogata();
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        });
+        threadCrackle.start();
+    }
+
+    private void createMusicThread() {
+        threadMusic = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //El Thread acaba cuando music este en off
+                while (btnMusic.getTag().equals("music_on")) {
+                    if(!mediaPlayer.isPlaying()) {
+                        mediaPlayer = randomMusic();
+                        mediaPlayer.start();
+                    }
+                    try {
+                        Thread.sleep(320000);
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        });
+        threadMusic.start();
     }
 
     private MediaPlayer randomMusic() {
