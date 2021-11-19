@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.CollapsibleActionView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private ConstraintLayout background;
     private ImageView imvBackground, imageView;
     private SoundPool soundPool;
+    private MediaPlayer mediaPlayer;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
     private ImageButton btnMute, btnMusic;
     private byte contBackground = 1;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         Glide.with(this).load(R.drawable.campfire).into(imageView);
         imageView.setTag("campfire");
 
-        soundPool = new SoundPool(3, AudioManager.STREAM_MUSIC,0);
+        soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC,0);
         idCrackle1 = soundPool.load(this, R.raw.crackle1,1);
         idCrackle2 = soundPool.load(this, R.raw.crackle2, 1);
         idCrackle3 = soundPool.load(this, R.raw.crackle3, 1);
@@ -69,7 +71,26 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
+        mediaPlayer = randomMusic();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    if(btnMusic.getTag().equals("music_on")) {
+                        if(!mediaPlayer.isPlaying()) {
+                            mediaPlayer = randomMusic();
+                            mediaPlayer.start();
+                        }
+                    }
+                    try {
+                        Thread.sleep(300000);
+                    } catch (InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        }).start();
 
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,5 +220,24 @@ public class MainActivity extends AppCompatActivity {
                 View.SYSTEM_UI_FLAG_FULLSCREEN
                 |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
         );
+    }
+
+    private MediaPlayer randomMusic() {
+        byte random = (byte) (Math.random()*3);
+        MediaPlayer mediaPlayer;
+        switch (random) {
+            case 0:
+                mediaPlayer = MediaPlayer.create(this, R.raw.calm1);
+                break;
+            /*case 1:
+                mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
+                break;*/
+            case 2:
+                mediaPlayer = MediaPlayer.create(this, R.raw.calm3);
+                break;
+            default:
+                mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
+        }
+        return mediaPlayer;
     }
 }
