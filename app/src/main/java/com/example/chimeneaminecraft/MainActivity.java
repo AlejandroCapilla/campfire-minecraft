@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ConstraintLayout background;
     private ImageView imvBackground, imageView;
     private SoundPool soundPool;
     private MediaPlayer mediaPlayer;
@@ -30,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        background = findViewById(R.id.background);
         imageView = findViewById(R.id.imvFogata);
         imvBackground = findViewById(R.id.imageViewBackground);
         imvBackground.setImageResource(R.drawable.background_1);
@@ -217,20 +215,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private MediaPlayer randomMusic() {
-        byte random = (byte) (Math.random()*3);
+        byte random = (byte) (Math.random()*6);
         MediaPlayer mediaPlayer;
         switch (random) {
             case 0:
                 mediaPlayer = MediaPlayer.create(this, R.raw.calm1);
                 break;
-            /*case 1:
+            case 1:
                 mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
-                break;*/
+                break;
             case 2:
                 mediaPlayer = MediaPlayer.create(this, R.raw.calm3);
                 break;
+            case 3:
+                mediaPlayer = MediaPlayer.create(this, R.raw.hal2);
+                break;
+            case 4:
+                mediaPlayer = MediaPlayer.create(this, R.raw.piano1);
+                break;
             default:
-                mediaPlayer = MediaPlayer.create(this, R.raw.calm2);
+                mediaPlayer = MediaPlayer.create(this, R.raw.piano2);
         }
         return mediaPlayer;
     }
