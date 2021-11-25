@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView imvBackground, imageView;
-    private SoundPool soundPool;
+    private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
     private ImageButton btnMute, btnMusic;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
@@ -44,8 +44,13 @@ public class MainActivity extends AppCompatActivity {
             btnMusic.setTag("music_on");
         }
 
-        btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
-        btnMute.setTag("mute");
+        if (estadoSonido.equals("mute")) {
+            btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
+            btnMute.setTag("mute");
+        } else {
+            btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
+            btnMute.setTag("sound");
+        }
 
         Glide.with(this).load(R.drawable.campfire).into(imageView);
         imageView.setTag("campfire");
@@ -58,8 +63,6 @@ public class MainActivity extends AppCompatActivity {
         idCrackle5 = soundPool.load(this, R.raw.crackle5, 1);
         idCrackle6 = soundPool.load(this, R.raw.crackle6, 1);
 
-        //mediaPlayer = randomMusic();
-
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
                     estadoMusica = "music_on";
                     btnMusic.setTag(estadoMusica);
-                    //mediaPlayer = randomMusic();
                     //Se crea un nuevo Thread para music
                     createMusicThread();
                 } else {
@@ -84,13 +86,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (btnMute.getTag().equals("mute")) {
                     btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
-                    btnMute.setTag("sound");
+                    estadoSonido = "sound";
+                    btnMute.setTag(estadoSonido);
                     //Se crea un nuevo Thread para el crackle
                     createCrackleThread();
                     createCrackleThread2();
                 } else {
                     btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
-                    btnMute.setTag("mute");
+                    estadoSonido = "mute";
+                    btnMute.setTag(estadoSonido);
                     // Se pausa el soundPool
                     soundPool.autoPause();
                 }
