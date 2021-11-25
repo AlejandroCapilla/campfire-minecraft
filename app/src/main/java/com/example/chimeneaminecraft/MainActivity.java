@@ -10,17 +10,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView imvBackground, imageView;
     private SoundPool soundPool;
-    private MediaPlayer mediaPlayer;
+    private static MediaPlayer mediaPlayer;
     private ImageButton btnMute, btnMusic;
     private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
     private byte contBackground = 1;
+    private static String estadoMusica = "music_off";
+    private static String estadoSonido = "mute";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,14 @@ public class MainActivity extends AppCompatActivity {
         btnMute = findViewById(R.id.btnMute);
         btnMusic = findViewById(R.id.btnMusic);
 
-        btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
-        btnMusic.setTag("music_off");
+        if (estadoMusica.equals("music_off")) {
+            btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
+            btnMusic.setTag("music_off");
+        } else {
+            btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
+            btnMusic.setTag("music_on");
+        }
+
         btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
         btnMute.setTag("mute");
 
@@ -51,19 +58,22 @@ public class MainActivity extends AppCompatActivity {
         idCrackle5 = soundPool.load(this, R.raw.crackle5, 1);
         idCrackle6 = soundPool.load(this, R.raw.crackle6, 1);
 
-        mediaPlayer = randomMusic();
+        //mediaPlayer = randomMusic();
 
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (btnMusic.getTag().equals("music_off")) {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
-                    btnMusic.setTag("music_on");
+                    estadoMusica = "music_on";
+                    btnMusic.setTag(estadoMusica);
+                    //mediaPlayer = randomMusic();
                     //Se crea un nuevo Thread para music
                     createMusicThread();
                 } else {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
-                    btnMusic.setTag("music_off");
+                    estadoMusica = "music_off";
+                    btnMusic.setTag(estadoMusica);
                     mediaPlayer.pause();
                 }
             }
@@ -208,12 +218,10 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 //El Thread acaba cuando music este en off
                 while (btnMusic.getTag().equals("music_on")) {
-                    if(!mediaPlayer.isPlaying()) {
-                        mediaPlayer = randomMusic();
-                        mediaPlayer.start();
-                    }
+                    mediaPlayer = randomMusic();
+                    mediaPlayer.start();
                     try {
-                        Thread.sleep(320000);
+                        Thread.sleep(340000);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }
