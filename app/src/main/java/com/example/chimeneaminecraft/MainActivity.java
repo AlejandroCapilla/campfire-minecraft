@@ -18,10 +18,12 @@ public class MainActivity extends AppCompatActivity {
     private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
     private ImageButton btnMute, btnMusic;
-    private int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
+    private static int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
     private byte contBackground = 1;
     private static String estadoMusica = "music_off";
     private static String estadoSonido = "mute";
+    private static boolean banderaCrackle = true;
+    private static boolean banderaCrackle2 = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
                     estadoSonido = "mute";
                     btnMute.setTag(estadoSonido);
+                    banderaCrackle = false;
+                    banderaCrackle2 = false;
                     // Se pausa el soundPool
                     soundPool.autoPause();
                 }
@@ -187,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //El Thread acaba si el boton pasa a mute
-                while (!btnMute.getTag().equals("mute")) {
+                while (banderaCrackle) {
                     reproducirSonidoFogata(0.8f, 1);
                     try {
                         Thread.sleep(5000);
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                         exception.printStackTrace();
                     }
                 }
+                banderaCrackle = true;
             }
         }).start();
     }
@@ -204,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 //El Thread acaba si el boton pasa a mute
-                while (!btnMute.getTag().equals("mute")) {
+                while (banderaCrackle2) {
                     reproducirSonidoFogata(0.4f, 2);
                     try {
                         Thread.sleep(3600);
@@ -212,6 +217,7 @@ public class MainActivity extends AppCompatActivity {
                         exception.printStackTrace();
                     }
                 }
+                banderaCrackle2 = true;
             }
         }).start();
     }
