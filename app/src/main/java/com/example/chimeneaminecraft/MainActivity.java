@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private static String estadoSonido = "mute";
     private static boolean banderaCrackle = true;
     private static boolean banderaCrackle2 = true;
+    private static boolean banderaMusic = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
                     estadoMusica = "music_off";
                     btnMusic.setTag(estadoMusica);
+                    banderaMusic = false;
                     mediaPlayer.pause();
                 }
             }
@@ -226,16 +228,24 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                boolean aux = true;
                 //El Thread acaba cuando music este en off
-                while (btnMusic.getTag().equals("music_on")) {
-                    mediaPlayer = randomMusic();
-                    mediaPlayer.start();
+                while (banderaMusic) {
+                    if (aux) {
+                        mediaPlayer = randomMusic();
+                        mediaPlayer.start();
+                        aux = false;
+                    } else if (!mediaPlayer.isPlaying()){
+                        mediaPlayer = randomMusic();
+                        mediaPlayer.start();
+                    }
                     try {
-                        Thread.sleep(340000);
+                        Thread.sleep(5000);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }
                 }
+                banderaMusic = true;
             }
         }).start();
     }
