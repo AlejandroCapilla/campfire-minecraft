@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private static MediaPlayer mediaPlayer;
     private ImageButton btnMute, btnMusic;
     private static int idCrackle1, idCrackle2, idCrackle3,idCrackle4, idCrackle5, idCrackle6;
-    private byte contBackground = 1;
+    private static byte contBackground = 1;
     private static String estadoMusica = "music_off";
     private static String estadoSonido = "mute";
     private static boolean banderaCrackle = true;
@@ -34,7 +34,16 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imvFogata);
         imvBackground = findViewById(R.id.imageViewBackground);
-        imvBackground.setImageResource(R.drawable.background_1);
+
+        switch (contBackground) {
+            case 1:
+                imvBackground.setImageResource(R.drawable.background_1);
+                break;
+            case 2:
+                imvBackground.setImageResource(R.drawable.background_2);
+                break;
+        }
+
         imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
         btnMute = findViewById(R.id.btnMute);
         btnMusic = findViewById(R.id.btnMusic);
