@@ -34,36 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.imvFogata);
         imvBackground = findViewById(R.id.imageViewBackground);
-
-        switch (contBackground) {
-            case 1:
-                imvBackground.setImageResource(R.drawable.background_1);
-                break;
-            case 2:
-                imvBackground.setImageResource(R.drawable.background_2);
-                break;
-        }
-
-        imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        agregarBackground();
         btnMute = findViewById(R.id.btnMute);
         btnMusic = findViewById(R.id.btnMusic);
-
-        if (estadoMusica.equals("music_off")) {
-            btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
-            btnMusic.setTag("music_off");
-        } else {
-            btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
-            btnMusic.setTag("music_on");
-        }
-
-        if (estadoSonido.equals("mute")) {
-            btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
-            btnMute.setTag("mute");
-        } else {
-            btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
-            btnMute.setTag("sound");
-        }
-
+        agregarImagenAbtnMusic();
+        agregarImagenAbtnMute();
         Glide.with(this).load(R.drawable.campfire).into(imageView);
         imageView.setTag("campfire");
 
@@ -283,4 +258,39 @@ public class MainActivity extends AppCompatActivity {
         }
         return mediaPlayer;
     }
+
+    //CREACION DE VISTAS
+    private void agregarBackground() {
+        switch (contBackground) {
+            case 1:
+                imvBackground.setImageResource(R.drawable.background_1);
+                break;
+            case 2:
+                imvBackground.setImageResource(R.drawable.background_2);
+                break;
+        }
+
+        imvBackground.setScaleType(ImageView.ScaleType.CENTER_CROP);
+    }
+
+    private void agregarImagenAbtnMusic() {
+        if (estadoMusica.equals("music_off")) {
+            btnMusic.setImageResource(R.drawable.ic_baseline_music_off_24);
+            btnMusic.setTag("music_off");
+        } else {
+            btnMusic.setImageResource(R.drawable.ic_baseline_music_note_24);
+            btnMusic.setTag("music_on");
+        }
+    }
+
+    private void agregarImagenAbtnMute() {
+        if (estadoSonido.equals("mute")) {
+            btnMute.setImageResource(R.drawable.ic_baseline_volume_off_24);
+            btnMute.setTag("mute");
+        } else {
+            btnMute.setImageResource(R.drawable.ic_baseline_volume_up_24);
+            btnMute.setTag("sound");
+        }
+    }
+
 }
